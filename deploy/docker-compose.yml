@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   letsencrypt:
-    image: adferrand/dnsrobocert:3.26.1
+    image: adferrand/dnsrobocert:3.26.1@sha256:e8e7d1bd127aebcee036f4211a3c89f0b819bf5d719ff6ddcf1e8b436540fa6c
     container_name: letsencrypt-dns
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -10,7 +10,7 @@ services:
       - ./le-config.yml:/etc/dnsrobocert/config.yml
     restart: always
   sish:
-    image: ghcr.io/glueops/sish:latest
+    image: ghcr.io/glueops/sish:latest@sha256:17f5ec7755d3edebb8101670ba0cd3f7931a122a469648b1fe51575ef629d716
     container_name: sish
     depends_on: 
       - letsencrypt
