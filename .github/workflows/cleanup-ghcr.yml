@@ -1,0 +1,23 @@
+name: Cleanup old container images
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Delete old container images
+        uses: snok/container-retention-policy@v3.0.1
+        with:
+          account: ${{ github.repository_owner }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          image-names: "sish,sish-build-image"
+          cut-off: 2 weeks ago UTC
+          keep-n-most-recent: 10
+          skip-shas: true
+          skip-tags: "latest,main,v*" 
