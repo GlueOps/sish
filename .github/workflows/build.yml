@@ -12,106 +12,119 @@ on:
       - main
 
 env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
   PLATFORMS: |
     linux/arm/v7
     linux/arm64
     linux/amd64
-  TAGS: |
-    type=schedule
-    type=ref,event=branch
-    type=ref,event=tag
-    type=ref,event=pr
-    type=sha,prefix=,suffix=,format=long
 
 jobs:
   test:
     runs-on: ubuntu-24.04
     steps:
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: "1.25"
-    - name: Checkout repo
-      uses: actions/checkout@v4
-    - name: Lint the codebase
-      uses: golangci/golangci-lint-action@v8
-      with:
-        version: latest
-    - name: Run tests
-      run: |
-        go test -v ./... -cover -race -coverprofile=coverage.out
-        go tool cover -func=coverage.out -o=coverage.out
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: "1.25"
+      - name: Checkout repo
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - name: Lint the codebase
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: latest
+      - name: Run tests
+        run: |
+          go test -v ./... -cover -race -coverprofile=coverage.out
+          go tool cover -func=coverage.out -o=coverage.out
+
   build:
     runs-on: ubuntu-24.04
     needs: test
+    permissions:
+      contents: read
+      packages: write
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
-      with:
-        platforms: all
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v3
-      with:
-        version: latest
-    - name: Login to Docker Hub
-      if: ${{ github.actor == github.repository_owner }}
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Collect image metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ github.repository }}
-        tags: ${{ env.TAGS }}
-    - name: Collect build image metadata
-      id: buildmeta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ github.repository }}-build-image
-        tags: ${{ env.TAGS }}
-    - name: Build and push release
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        push: ${{ github.actor == github.repository_owner }}
-        load: ${{ github.actor != github.repository_owner }}
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        target: release
-        cache-from: |
-          ${{ github.repository }}-cache
-        cache-to: |
-          ${{ github.actor == github.repository_owner && format('type=registry,ref={0}-cache,mode=max', github.repository) || '' }}
-        platforms: ${{ github.actor == github.repository_owner && env.PLATFORMS || 'linux/amd64' }}
-        build-args: |
-          DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
-          VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-          COMMIT=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
-          REPOSITORY=${{ github.repository }}
-    - name: Build and push build image
-      uses: docker/build-push-action@v6
-      with:
-        context: .
-        push: ${{ github.actor == github.repository_owner }}
-        load: ${{ github.actor != github.repository_owner }}
-        tags: ${{ steps.buildmeta.outputs.tags }}
-        labels: ${{ steps.buildmeta.outputs.labels }}
-        target: build-image
-        cache-from: |
-          ${{ github.repository }}-cache
-        cache-to: |
-          ${{ github.actor == github.repository_owner && format('type=registry,ref={0}-cache,mode=max', github.repository) || '' }}
-        platforms: ${{ github.actor == github.repository_owner && env.PLATFORMS || 'linux/amd64' }}
-        build-args: |
-          DATE=${{ fromJSON(steps.buildmeta.outputs.json).labels['org.opencontainers.image.created'] }}
-          VERSION=${{ fromJSON(steps.buildmeta.outputs.json).labels['org.opencontainers.image.version'] }}
-          COMMIT=${{ fromJSON(steps.buildmeta.outputs.json).labels['org.opencontainers.image.revision'] }}
-          REPOSITORY=${{ github.repository }}
-    - name: Get version info
-      run: |
-        docker run --rm ${{ github.repository }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }} -v
+      - name: Checkout repo
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch,prefix=
+            type=ref,event=tag,prefix=
+            type=sha,format=short,prefix=
+            type=sha,format=long,prefix=
+
+      - name: Extract Docker metadata for build image
+        id: buildmeta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-build-image
+          tags: |
+            type=ref,event=branch,prefix=
+            type=ref,event=tag,prefix=
+            type=sha,format=short,prefix=
+            type=sha,format=long,prefix=
+
+      - name: Build and push release
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          load: ${{ github.event_name == 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          target: release
+          platforms: ${{ github.event_name != 'pull_request' && env.PLATFORMS || 'linux/amd64' }}
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            DATE=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            COMMIT=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.revision'] }}
+            REPOSITORY=${{ github.repository }}
+
+      - name: Build and push build image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          load: ${{ github.event_name == 'pull_request' }}
+          tags: ${{ steps.buildmeta.outputs.tags }}
+          labels: ${{ steps.buildmeta.outputs.labels }}
+          target: build-image
+          platforms: ${{ github.event_name != 'pull_request' && env.PLATFORMS || 'linux/amd64' }}
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            DATE=${{ fromJSON(steps.buildmeta.outputs.json).labels['org.opencontainers.image.created'] }}
+            VERSION=${{ fromJSON(steps.buildmeta.outputs.json).labels['org.opencontainers.image.version'] }}
+            COMMIT=${{ fromJSON(steps.buildmeta.outputs.json).labels['org.opencontainers.image.revision'] }}
+            REPOSITORY=${{ github.repository }}
+
+      - name: Get version info
+        if: github.event_name == 'pull_request'
+        run: |
+          docker run --rm ${{ fromJSON(steps.meta.outputs.json).tags[0] }} -v
