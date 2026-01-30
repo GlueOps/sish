@@ -53,7 +53,7 @@ jobs:
           tags: sish:scan
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@76071ef0d7ec797419534a183b498b4d6366cf37 # 0.31.0
         with:
           image-ref: 'sish:scan'
           format: 'table'
@@ -63,7 +63,7 @@ jobs:
           severity: 'HIGH,CRITICAL'
 
       - name: Run Trivy and output SARIF
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@76071ef0d7ec797419534a183b498b4d6366cf37 # 0.31.0
         if: always()
         with:
           image-ref: 'sish:scan'
