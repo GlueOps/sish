@@ -24,6 +24,7 @@ services:
       --cleanup-unauthed-timeout=30s
       --append-user-to-subdomain-separator="-"
       --append-user-to-subdomain
+      --cleanup-unbound
 #      --debug
     depends_on:
       - authenticator
