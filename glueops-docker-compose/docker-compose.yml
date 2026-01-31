@@ -24,6 +24,7 @@ services:
       --authentication-key-request-timeout=15s
       --cleanup-unauthed-timeout=30s
       --append-user-to-subdomain-separator="-"
+      --append-user-to-subdomain
     depends_on:
       - authenticator
 
