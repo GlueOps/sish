@@ -23,6 +23,7 @@ services:
       --debug
       --authentication-key-request-timeout=15s
       --cleanup-unauthed-timeout=30s
+      --append-user-to-subdomain-separator="-"
     depends_on:
       - authenticator
 
