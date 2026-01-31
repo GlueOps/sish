@@ -1,13 +1,12 @@
-FROM python:3-alpine
-
-# Install Flask and Gunicorn
-RUN pip install flask gunicorn
+FROM python:3.12-alpine
 
 WORKDIR /app
-COPY auth.py /app/auth.py
 
-# Create data directory
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY auth.py .
+
 RUN mkdir -p /data
 
-# Run Gunicorn with 4 workers for multi-threading
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "auth:app"]
