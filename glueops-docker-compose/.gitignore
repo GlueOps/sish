@@ -1,2 +1,4 @@
 certs/**
 sish_users/**
+!certs/.keep
+!sish_users/.keep
