@@ -2,3 +2,4 @@ ssl/**
 sish_users/**
 !ssl/.keep
 !sish_users/.keep
+.env
