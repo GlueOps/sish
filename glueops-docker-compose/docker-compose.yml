@@ -17,7 +17,7 @@ services:
 
   # The SSH Server (GlueOps Version)
   sish:
-    image: ghcr.io/glueops/sish:latest
+    image: ghcr.io/glueops/sish:v2.20.0-glueops3
     container_name: sish
     restart: always
     ports:
