@@ -10,7 +10,7 @@ services:
       - ./le-config.yml:/etc/dnsrobocert/config.yml
     restart: always
   sish:
-    image: ghcr.io/glueops/sish:latest@sha256:8cbd397601616d8a0b767fa20f670a998f1d21dd8385a5277fa9ffa84c699daa
+    image: ghcr.io/glueops/sish:latest@sha256:4b1e8bd608c31a36a36ea2648d5c928bee6d7051e5ef5ce1602068203c1a69d3
     container_name: sish
     depends_on: 
       - letsencrypt
