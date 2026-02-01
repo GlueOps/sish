@@ -10,7 +10,7 @@ services:
     volumes:
       - letsencrypt:/etc/letsencrypt
       - ./deploy-hook.sh:/deploy-hook.sh:ro
-      - ssl:/ssl
+      - ./ssl:/ssl
     entrypoint: /bin/sh
     command:
       - -c
@@ -39,7 +39,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ssl:/ssl
+      - ./ssl:/ssl
     command: >
       --domain ${DOMAIN}
       --http-address :80
@@ -73,4 +73,3 @@ services:
 
 volumes:
   letsencrypt:
-  ssl:
