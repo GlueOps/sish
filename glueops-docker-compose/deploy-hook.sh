@@ -1,9 +1,11 @@
 #!/bin/sh
-# Deploy hook script for dnsrobocert
+# Deploy hook script for certbot
 # Copies renewed certificates to the ssl directory for sish to pick up
 
-DOMAIN="${RENEWED_DOMAINS%% *}"
-LETSENCRYPT_LIVE="/etc/letsencrypt/live/${DOMAIN}"
+# RENEWED_LINEAGE is set by certbot to the live directory path
+# e.g., /etc/letsencrypt/live/ssh.example.com
+LETSENCRYPT_LIVE="${RENEWED_LINEAGE}"
+DOMAIN=$(basename "${RENEWED_LINEAGE}")
 SSL_DIR="/ssl"
 
 echo "Deploying certificates for ${DOMAIN}..."

@@ -1,19 +1,33 @@
 services:
-  # DNS01 Let's Encrypt Certificate Manager (Route53)
+  # DNS01 Let's Encrypt Certificate Manager (Route53 + Certbot)
   letsencrypt:
-    image: adferrand/dnsrobocert:3.26.1
+    image: certbot/dns-route53:v3.1.0
     container_name: letsencrypt-dns
     restart: always
     environment:
-      - ACME_EMAIL=${ACME_EMAIL}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - DOMAIN=${DOMAIN}
     volumes:
       - letsencrypt:/etc/letsencrypt
-      - ./le-config.yml:/etc/dnsrobocert/config.yml
       - ./deploy-hook.sh:/deploy-hook.sh:ro
       - ssl:/ssl
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        # Initial certificate request (skip if already exists)
+        certbot certonly --dns-route53 \
+          --non-interactive --agree-tos \
+          --email ${ACME_EMAIL} \
+          -d ${DOMAIN} -d "*.${DOMAIN}" \
+          --deploy-hook /deploy-hook.sh \
+          --keep-until-expiring
+
+        # Renewal loop (check every 12 hours)
+        while true; do
+          sleep 12h
+          certbot renew --deploy-hook /deploy-hook.sh
+        done
 
   # The SSH Server (GlueOps Version)
   sish:

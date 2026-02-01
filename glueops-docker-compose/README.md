@@ -22,11 +22,13 @@
 
 ## SSL Certificates
 
-Certificates are automatically generated via Let's Encrypt using DNS01 challenge with AWS Route53. The stack obtains both `${DOMAIN}` and `*.${DOMAIN}` (wildcard) certificates.
+Certificates are automatically generated via Let's Encrypt using DNS-01 challenge with AWS Route53. The stack obtains both `${DOMAIN}` and `*.${DOMAIN}` (wildcard) certificates.
 
 ### How it works
 
-- **dnsrobocert** handles certificate issuance and renewal via Route53
+- **certbot** (with dns-route53 plugin) handles certificate issuance and renewal via Route53
+- On initial startup, certbot requests certificates using DNS-01 challenge
+- A renewal loop runs every 12 hours checking if certificates need renewal
 - On renewal, `deploy-hook.sh` copies certs to the shared `ssl` volume
 - **sish** watches the certificate directory and reloads automatically (200ms polling)
 
