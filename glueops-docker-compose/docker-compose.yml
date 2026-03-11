@@ -49,8 +49,8 @@ services:
       
       # Security & Cookie
       OAUTH2_PROXY_COOKIE_SECRET: ${COOKIE_SECRET}
-      OAUTH2_PROXY_COOKIE_DOMAIN: ."${DOMAIN}"
-      OAUTH2_PROXY_WHITELIST_DOMAIN: ."${DOMAIN}"
+      OAUTH2_PROXY_COOKIE_DOMAINS: .${DOMAIN}
+      OAUTH2_PROXY_WHITELIST_DOMAIN: .${DOMAIN}
       
       # Upstream & SSL
       OAUTH2_PROXY_UPSTREAM: http://sish:80
