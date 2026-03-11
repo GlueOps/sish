@@ -22,6 +22,10 @@ services:
           --deploy-hook /deploy-hook.sh \
           --keep-until-expiring
 
+        # Manually run the hook logic once to ensure /ssl has the right files/perms
+        # We manually set RENEWED_LINEAGE so the script knows where to look
+        RENEWED_LINEAGE="/etc/letsencrypt/live/${DOMAIN}" /bin/sh /deploy-hook.sh
+
         while true; do
           sleep 12h
           certbot renew --deploy-hook /deploy-hook.sh
