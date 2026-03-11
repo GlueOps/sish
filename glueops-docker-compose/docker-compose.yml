@@ -63,6 +63,8 @@ services:
       OAUTH2_PROXY_COOKIE_SAMESITE: "lax"
       OAUTH2_PROXY_COOKIE_SECURE: "true"
       OAUTH2_PROXY_PASS_HOST_HEADER: "true"
+      OAUTH2_PROXY_PROXY_WEBSOCKETS: "true"
+      OAUTH2_PROXY_SKIP_AUTH_PREFLIGHT: "false"
     volumes:
       - ./ssl:/ssl:ro
     depends_on:
