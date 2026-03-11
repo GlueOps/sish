@@ -62,6 +62,7 @@ services:
       OAUTH2_PROXY_SET_XAUTHUSER: "true" # Passes the user email to sish headers
       OAUTH2_PROXY_COOKIE_SAMESITE: "lax"
       OAUTH2_PROXY_COOKIE_SECURE: "true"
+      OAUTH2_PROXY_PASS_HOST_HEADER: "true"
     volumes:
       - ./ssl:/ssl:ro
     depends_on:
