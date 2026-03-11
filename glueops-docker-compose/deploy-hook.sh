@@ -16,6 +16,6 @@ cp -f "${LETSENCRYPT_LIVE}/privkey.pem" "${SSL_DIR}/${DOMAIN}.key"
 
 # Set proper permissions
 chmod 644 "${SSL_DIR}/${DOMAIN}.crt"
-chmod 600 "${SSL_DIR}/${DOMAIN}.key"
+chmod 644 "${SSL_DIR}/${DOMAIN}.key"
 
 echo "Certificates deployed successfully. Sish will reload automatically."
