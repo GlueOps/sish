@@ -65,6 +65,9 @@ services:
       OAUTH2_PROXY_PASS_HOST_HEADER: "true"
       OAUTH2_PROXY_PROXY_WEBSOCKETS: "true"
       OAUTH2_PROXY_SKIP_AUTH_PREFLIGHT: "false"
+      OAUTH2_PROXY_PASS_ACCESS_TOKEN: "true"
+      OAUTH2_PROXY_PASS_USER_HEADERS: "true" 
+      OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
     volumes:
       - ./ssl:/ssl:ro
     depends_on:
@@ -87,7 +90,6 @@ services:
       --ssh-address :2222
       --authentication=true
       --bind-random-subdomains=false
-      --proxy-ssl-termination=true
       --authentication-key-request-url="http://authenticator:5000/"
       --authentication-key-request-timeout=15s
       --cleanup-unauthed-timeout=30s
