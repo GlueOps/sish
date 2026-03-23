@@ -12,7 +12,7 @@ require (
 	github.com/jpillora/ipfilter v1.2.9
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/picosh/pdocs v0.0.0-20241118044720-1a43b70d33b7
-	github.com/pires/go-proxyproto v0.9.2
+	github.com/pires/go-proxyproto v0.11.0
 	github.com/radovskyb/watcher v1.0.7
 	github.com/sirupsen/logrus v1.9.4
 	github.com/spf13/cobra v1.10.2
