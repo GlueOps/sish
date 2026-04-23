@@ -72,6 +72,8 @@ github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLf
 github.com/jonboulle/clockwork v0.2.2/go.mod h1:Pkfl5aHPm1nk2H9h0bjmnJD/BcgbGXUBGnn1kMkgxc8=
 github.com/jpillora/ipfilter v1.2.9 h1:vjjcI1JpxZ6HvIj1MZfomhrfzXW/67QNdE449ZZfon8=
 github.com/jpillora/ipfilter v1.2.9/go.mod h1:QUYQLXQU0myCdxZVbYBZ5+An/qtSB2m1OBRiwqTa9pk=
+github.com/jpillora/ipfilter v1.3.0 h1:mjfcn7YjbU9T710+u+KRfxPqFDIkZjQ/kWAbukijSHk=
+github.com/jpillora/ipfilter v1.3.0/go.mod h1:5VAr3WE/yrs38vvioOcOD+4xNFez2MVN3hnmJtHmiCQ=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
 github.com/jung-kurt/gofpdf v1.0.3-0.20190309125859-24315acbbda5/go.mod h1:7Id9E/uU8ce6rXgefFLlgrJj/GYY22cpxn+r32jIOes=
