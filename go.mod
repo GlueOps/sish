@@ -9,7 +9,7 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/gin-gonic/gin v1.11.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/jpillora/ipfilter v1.2.9
+	github.com/jpillora/ipfilter v1.3.0
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/picosh/pdocs v0.0.0-20241118044720-1a43b70d33b7
 	github.com/pires/go-proxyproto v0.9.2
