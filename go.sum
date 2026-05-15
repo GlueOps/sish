@@ -114,6 +114,8 @@ github.com/phuslu/iploc v1.0.20260115 h1:DSo9u0GSVkNUXq1ZRYpe50kEjmyyWTkcNcSnUbe
 github.com/phuslu/iploc v1.0.20260115/go.mod h1:VZqAWoi2A80YPvfk1AizLGHavNIG9nhBC8d87D/SeVs=
 github.com/picosh/pdocs v0.0.0-20241118044720-1a43b70d33b7 h1:bFTqN2+VzAvv3+///We9tgKsZt84lcEAi9Jp9YmDV20=
 github.com/picosh/pdocs v0.0.0-20241118044720-1a43b70d33b7/go.mod h1:KXO3Z0EVdA811AX6mlK4lwFDT+KgmegRVrEmZU5uLXU=
+github.com/picosh/pdocs v0.0.0-20260415144233-acc53e8c9998 h1:1Ye5T/aT/P+jhfBaJVm9ZquOGNp0RxUJX+oc/s8WAfk=
+github.com/picosh/pdocs v0.0.0-20260415144233-acc53e8c9998/go.mod h1:KXO3Z0EVdA811AX6mlK4lwFDT+KgmegRVrEmZU5uLXU=
 github.com/pires/go-proxyproto v0.9.2 h1:H1UdHn695zUVVmB0lQ354lOWHOy6TZSpzBl3tgN0s1U=
 github.com/pires/go-proxyproto v0.9.2/go.mod h1:ZKAAyp3cgy5Y5Mo4n9AlScrkCZwUy0g3Jf+slqQVcuU=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
