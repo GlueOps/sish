@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   letsencrypt:
-    image: adferrand/dnsrobocert:3.26.1@sha256:e8e7d1bd127aebcee036f4211a3c89f0b819bf5d719ff6ddcf1e8b436540fa6c
+    image: adferrand/dnsrobocert:3.27.0@sha256:88ebafa8895a0a4bad1ca415272fdcd86b53e90cb7ed3298c2508f3f217b35c7
     container_name: letsencrypt-dns
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
