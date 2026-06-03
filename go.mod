@@ -6,7 +6,7 @@ require (
 	github.com/antoniomika/multilistener v0.0.0-20240307222635-f0dc097d8acc
 	github.com/antoniomika/syncmap v1.0.0
 	github.com/caddyserver/certmagic v0.25.1
-	github.com/fsnotify/fsnotify v1.9.0
+	github.com/fsnotify/fsnotify v1.10.1
 	github.com/gin-gonic/gin v1.11.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/jpillora/ipfilter v1.2.9
